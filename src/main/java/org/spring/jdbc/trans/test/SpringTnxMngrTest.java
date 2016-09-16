@@ -1,5 +1,7 @@
 package org.spring.jdbc.trans.test;
 
+import java.util.List;
+
 import org.spring.jdbc.trans.model.Address;
 import org.spring.jdbc.trans.model.Employee;
 import org.spring.jdbc.trans.service.EmployeeManagerService;
@@ -10,7 +12,7 @@ public class SpringTnxMngrTest {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
 		EmployeeManagerService employeeManagerService = ctx.getBean("employeeManagerService",
 				EmployeeManagerService.class);
-		Employee employee = createEmployee();
+		/*Employee employee = createEmployee();
 		System.out.println("*************Create Employee Called************");
 		employeeManagerService.createEmployee(employee);
 		System.out.println("*************Create Employee Completed************");
@@ -28,7 +30,12 @@ public class SpringTnxMngrTest {
 		System.out.println("*************Delete Employee Called************");
 		employeeManagerService.deleteEmployee(emp.getId());
 		System.out.println("*************Delete Employee Completed************");
-
+*/
+		List<Employee> employeeList = employeeManagerService.getAllEmployees();
+		for (Employee e : employeeList) {
+			System.out.println(e.toString());
+		}
+		
 		ctx.close();
 
 	}

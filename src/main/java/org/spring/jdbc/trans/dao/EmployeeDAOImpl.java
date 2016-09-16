@@ -2,6 +2,7 @@ package org.spring.jdbc.trans.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.spring.jdbc.trans.model.Employee;
 import org.spring.jdbc.trans.util.EmployeeRowMapper;
@@ -19,7 +20,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	
 	private static final String DELETE_EMPLOYEE_QUERY = "delete from employee where id = ?";
 	
-	private static final String SELECT_ALL_EMMPLOYEE_QUERY = "select * from Employee";
+	private static final String SELECT_ALL_EMMPLOYEE_QUERY = "select id, name from Employee";
 	
 	private JdbcTemplate springJdbcTemplate;
 
@@ -82,13 +83,19 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		
 		List<Employee> empList = new ArrayList<Employee>();
 		
-		List<Employee> queryResult = springJdbcTemplate.query(SELECT_ALL_EMMPLOYEE_QUERY,
+		/*List<Employee> queryResult = springJdbcTemplate.query(SELECT_ALL_EMMPLOYEE_QUERY,
 				new BeanPropertyRowMapper<Employee>(Employee.class));
+		*/
 		
-		/*List<Employee> queryResult = springJdbcTemplate.queryForList(SELECT_ALL_EMMPLOYEE_QUERY,
-				new BeanPropertyRowMapper<Employee>(Employee.class));*/
+		List<Map<String, Object>> queryResult = springJdbcTemplate.queryForList(SELECT_ALL_EMMPLOYEE_QUERY);
 		
+		for(Map<String, Object> empMap : queryResult){
+			Employee emp = new Employee();
+			emp.setId(Integer.parseInt(String.valueOf(empMap.get("id"))));
+			emp.setName(String.valueOf(empMap.get("name")));			
+			empList.add(emp);
+		}
 		
-		return queryResult;
+		return empList;
 	}
 }
